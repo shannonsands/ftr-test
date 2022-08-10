@@ -2,7 +2,7 @@
 
 ### To get started with Part 1 (the example application)...
 
-* Clone the repository using the command line or git client of choice (`git clone https://github.com`):
+* Clone the repository using the command line or git client of choice (`git clone https://github.com/shannonsands/ftr-test.git`):
 * Enter the directory cloned (`cd ftr-test`)
 * Run the install command (`npm i`);
 * And launch the CLI (`npm start`)
@@ -10,13 +10,14 @@
 ### Answers for Part 2
 **Updating the UI**
 
-Creating an Angular app was chosen to most closely reflect the behaviour described in the requirements (and the examples given), but could easily form the foundation for a range of different interfaces, such as a RESTful API used by a client application, or a library used by a single page application running purely in the browser. Architecturally, it's just a very simple MVC-style application, so decoupling the view entirely from the controller would be extremely simple & shouldn't really require any changes.
+Creating an Angular app was chosen to most closely reflect the behaviour described in the requirements (and the examples given), while also being a little more appropriate to the role than just a CLI app. Most of the functional requirements were implemented in Angular services, and thus could be extracted out into Typescript classes for adaption as a CLI app, RESTful API backend, used in Lambdas, or even just packaged into an NPM package for use wherever required.
 
-For example, to turn this application into an API backend using Express (deployable on VPS, Docker instance or similar) we could perform the following steps:
-1. Fork or branch the existing repository on a dev system.
+For example, to turn this application into an API backend using Express (deployable on VPS, a Docker instance or similar) we could perform the following steps:
+1. Set up a new project using ts-node or the npm libraries with the typescript language package & tsc.
 1. Install Express ( and some typical accompanying modules for enabling websockets, reading configs etc).
-2. Add a new entrypoint that sets up a simple Express application.
-3. Create a new class to handle route listeners, creating the FtrTest controller instance and mapping routes & HTTP verbs to the various methods in the controller as appropriate.
+2. Add a new entrypoint (eg, an `index.ts` file executed on startup) that sets up a simple Express application.
+3. Refactor the services in the Angular app to be regular Typescript classes.
+3. Create a new class or function collection to add route listeners & handlers, creating the FtrTest controller instance and mapping routes & HTTP verbs to the various methods in the controller as appropriate.
 4. Add a websocket handler, for sending regular messages to the browser from the timer.
 5. Create a frontend UI that makes AJAX calls to test the functionality (or spend the time to create a set of endpoint tests in Postman)
 

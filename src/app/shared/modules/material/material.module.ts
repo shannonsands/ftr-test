@@ -5,6 +5,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
 // Prevent clutter in the app module by packaging material modules here
 @NgModule({
   declarations: [],
@@ -15,13 +18,19 @@ import { MatIconModule } from '@angular/material/icon';
     MatDividerModule,
     MatToolbarModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatInputModule
   ],
   exports:[
     MatButtonModule,
     MatSidenavModule,
     MatDividerModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatInputModule
   ]
 })
 export class MaterialModule { }

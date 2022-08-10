@@ -39,7 +39,7 @@ export class TimerService {
   // Run the stored callback function each time the timer fires
   createTimer(): void {
     this.timer = setInterval(() => {
-        this.callback();
+      this.callback();
     }, this.interval);
     this.timeStarted = new Date();
     this.state = TimerState.Running;
@@ -58,11 +58,17 @@ export class TimerService {
 
   // get the remaining time, do a single timeout & then just restart setInterval again
   resumeTimer(): void {
+      console.log('Resume');
       this.pausedTime += new Date().valueOf() - this.lastPausedTime.valueOf();
       this.resumeId = setTimeout(() => {
           this.callback();
           this.createTimer()
       }, this.remaining);
       this.state = TimerState.Running;
+  }
+
+  quitTimer() {
+    clearInterval(this.timer);
+    clearTimeout(this.resumeId);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TimerState } from 'src/app/shared/data';
 import { TimerService, FrequencyTableService, FibonacciService } from 'src/app/shared/services';
+import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -12,15 +13,21 @@ export class MainComponent implements OnInit {
   timerOutput!: string;
   lastNumber!: number | null;
   interval!: number;
+  quitApp = false;
 
   get timerSet (): boolean {
     return this.timerService.timerState !== TimerState.Unset;
   }
 
+  get timerPaused(): boolean {
+    return this.timerService.timerState === TimerState.Paused;
+  }
+
   constructor(
     private timerService: TimerService,
     private frequencyTableService: FrequencyTableService,
-    private fibonacciService: FibonacciService
+    private fibonacciService: FibonacciService,
+    private snackBarService: MatSnackBar
     ) { }
 
   ngOnInit(): void {
@@ -31,6 +38,7 @@ export class MainComponent implements OnInit {
   }
 
   setInterval(event: Event) {
+    console.log('Set Interval');
     const number = (event.target as any).value;
     if (number) {
       this.interval = Number.parseFloat(number) * 1000;
@@ -41,20 +49,28 @@ export class MainComponent implements OnInit {
 
   updateFrequencyTable(event: Event) {
     const number = (event.target as any).value;
-    // check fib and show notification
     if (number && !Number.isNaN(number)) {
       // Force numbers entered to be integers
       this.frequencyTableService.addInteger(Number.parseInt(number));
       this.lastNumber = null;
+      // check fib & show notification
+      const isFib = this.fibonacciService.isFib(Number.parseInt(number));
+      if (isFib) {
+        this.snackBarService.open('FIB', 'dismiss', {
+          duration: 1000
+        });
+      }
+
     }
   }
 
   // Arrow function syntax to bind to the correct scope, for use as a callback
   printSortedFreqs = (): void => {
-    // const sortedFreqs = `${this.ftrTest.getSortedIntegerFrequencies()}\n`;
     setTimeout(() => {
-      this.timerOutputRef.nativeElement.classList.remove('visible');
-      this.timerOutputRef.nativeElement.classList.add('hidden');
+      if (!this.timerPaused) {
+        this.timerOutputRef.nativeElement.classList.remove('visible');
+        this.timerOutputRef.nativeElement.classList.add('hidden');
+      }
     }, this.interval / 3);
     this.timerOutputRef.nativeElement.classList.remove('hidden');
     this.timerOutputRef.nativeElement.classList.add('visible');
@@ -66,6 +82,8 @@ export class MainComponent implements OnInit {
 
   halt() {
     this.timerService.pauseTimer();
+    this.timerOutputRef.nativeElement.classList.remove('hidden');
+    this.timerOutputRef.nativeElement.classList.add('visible');
   }
 
   resume() {
@@ -73,8 +91,7 @@ export class MainComponent implements OnInit {
   }
 
   quit() {
-    this.timerService.pauseTimer();
+    this.timerService.quitTimer();
+
   }
-
-
 }

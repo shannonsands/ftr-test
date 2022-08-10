@@ -1,7 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { TimerState } from 'src/app/shared/data';
 import { TimerService, FrequencyTableService, FibonacciService } from 'src/app/shared/services';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
+import { DialogComponent, DialogData } from './dialog/dialog.component';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -27,7 +29,8 @@ export class MainComponent implements OnInit {
     private timerService: TimerService,
     private frequencyTableService: FrequencyTableService,
     private fibonacciService: FibonacciService,
-    private snackBarService: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
@@ -56,7 +59,7 @@ export class MainComponent implements OnInit {
       // check fib & show notification
       const isFib = this.fibonacciService.isFib(Number.parseInt(number));
       if (isFib) {
-        this.snackBarService.open('FIB', 'dismiss', {
+        this.snackBar.open('FIB', 'dismiss', {
           duration: 1000
         });
       }
@@ -91,7 +94,15 @@ export class MainComponent implements OnInit {
   }
 
   quit() {
+    const dialogData: DialogData = {
+      message: 'Thanks for playing!',
+      frequencyOutput: this.frequencyTableService.getSortedIntegerFrequencies() ?? 'Nothing entered'
+    };
     this.timerService.quitTimer();
-
+    this.dialog.open(DialogComponent, {
+      data: dialogData,
+    });
+    this.quitApp = true;
   }
 }
+

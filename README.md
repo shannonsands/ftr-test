@@ -8,7 +8,7 @@
 * Launch the dev server (`npm start`)
 * Open a browser to `localhost:4200`
 or
-* Navigate to 
+* Navigate to a [Netlify preview deployment](https://62f33bd612763a6c11d4218c--friendly-cranachan-beb5fe.netlify.app/)
 ### Answers for Part 2
 **Updating the UI**
 
@@ -16,15 +16,13 @@ Creating an Angular app was chosen to most closely reflect the behaviour describ
 
 For example, to turn this application into an API backend using Express (deployable on VPS, a Docker instance or similar) we could perform the following steps:
 1. Set up a new project using ts-node or the npm libraries with the typescript language package & tsc.
-1. Install Express ( and some typical accompanying modules for enabling websockets, reading configs etc).
+1. Install Express (and some typical accompanying modules for enabling websockets, reading configs etc).
 2. Add a new entrypoint (eg, an `index.ts` file executed on startup) that sets up a simple Express application.
 3. Refactor the services in the Angular app to be regular Typescript classes.
 4. Create a new class or function collection to add route listeners & handlers.
 5. Creating a controller class with methods to be invoked by the route handlers, and map routes & HTTP verbs to the various methods in the controller as appropriate.
 6. Add a websocket handler, for sending regular messages to the browser (or other ws client) from the timer.
 7. Create a frontend UI that makes AJAX calls to consume the endpoints & test the functionality (or spend the time to create a set of endpoint tests in Postman).
-
-
 
 **Making it Production Ready**
 
@@ -42,4 +40,3 @@ Assuming the above example of a CLI application the steps would include:
 **Impressions of the coding test**
 
 It was actually quite an interesting test for something so short! It appeared short & simple at first glance, but there's a few potential gotchas in there (such as various ways of blocking the event loop when automatically printing the frequency table if this was completed on the backend, while continuing to accept input) & little bits of detail (such as reverse ordering the frequency table prints) that could be easy to overlook. The generation of the Fibonacci series is always a classic exercise of course, so it was interesting to do that again. I don't have much to suggest there - it's a good way to combine a simple set of problems with a small application to assess applicants.
-

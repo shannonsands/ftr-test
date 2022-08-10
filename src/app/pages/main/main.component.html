@@ -13,13 +13,13 @@
       <mat-card-content *ngIf="timerSet">
         <mat-form-field appearance="fill">
           <mat-label>{{inputLabel}}</mat-label>
-          <input (keyup.enter)="setInterval($event)" type="number" matInput>
+          <input type="number" (keyup.enter)="updateFrequencyTable($event)" matInput  [(ngModel)]="lastNumber" name="nextInput">
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>HALT</button>
-        <button mat-button>RESUME</button>
-        <button mat-button>QUIT</button>
+        <button mat-button [disabled]="!timerSet" (click)="halt()">HALT</button>
+        <button mat-button [disabled]="!timerSet" (click)="resume()">RESUME</button>
+        <button mat-button [disabled]="!timerSet" (click)="quit()">QUIT</button>
       </mat-card-actions>
     </mat-card>
   </form>

@@ -31,6 +31,7 @@ export class IntegerFrequencyTable {
             })
             .join(', ');
         }
+        return;
     }
 
 

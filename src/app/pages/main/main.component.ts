@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TimerState } from 'src/app/shared/data';
-import { TimerService } from 'src/app/shared/services/timer.service';
+import { TimerService, FrequencyTableService, FibonacciService } from 'src/app/shared/services';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -10,14 +10,18 @@ export class MainComponent implements OnInit {
   @ViewChild('timerOutputRef') timerOutputRef!: ElementRef;
   inputLabel!: string;
   timerOutput!: string;
-  lastNumber!: string;
+  lastNumber!: number | null;
   interval!: number;
 
   get timerSet (): boolean {
     return this.timerService.timerState !== TimerState.Unset;
   }
 
-  constructor(private timerService: TimerService) { }
+  constructor(
+    private timerService: TimerService,
+    private frequencyTableService: FrequencyTableService,
+    private fibonacciService: FibonacciService
+    ) { }
 
   ngOnInit(): void {
     this.inputLabel = 'Please enter the amount of time in seconds between emitting numbers & their frequency';
@@ -27,14 +31,22 @@ export class MainComponent implements OnInit {
   }
 
   setInterval(event: Event) {
-    this.interval = (event.target as any).value * 1000;
-    this.timerService.setInterval(this.interval, this.printSortedFreqs);
-    this.inputLabel = 'Please enter the first number';
+    const number = (event.target as any).value;
+    if (number) {
+      this.interval = Number.parseFloat(number) * 1000;
+      this.timerService.setInterval(this.interval, this.printSortedFreqs);
+      this.inputLabel = 'Please enter the first number';
+    }
   }
 
   updateFrequencyTable(event: Event) {
-    const number: number = (event.target as any).value;
-
+    const number = (event.target as any).value;
+    // check fib and show notification
+    if (number && !Number.isNaN(number)) {
+      // Force numbers entered to be integers
+      this.frequencyTableService.addInteger(Number.parseInt(number));
+      this.lastNumber = null;
+    }
   }
 
   // Arrow function syntax to bind to the correct scope, for use as a callback
@@ -46,17 +58,23 @@ export class MainComponent implements OnInit {
     }, this.interval / 3);
     this.timerOutputRef.nativeElement.classList.remove('hidden');
     this.timerOutputRef.nativeElement.classList.add('visible');
-    const sortedFreqs = `Blah blah\n`;
+    const sortedFreqs = this.frequencyTableService.getSortedIntegerFrequencies();
     if (sortedFreqs) {
         this.timerOutput = sortedFreqs;
     }
   }
 
-  halt() {}
+  halt() {
+    this.timerService.pauseTimer();
+  }
 
-  resume() {}
+  resume() {
+    this.timerService.resumeTimer();
+  }
 
-  quit() {}
+  quit() {
+    this.timerService.pauseTimer();
+  }
 
 
 }

@@ -5,8 +5,10 @@
 * Clone the repository using the command line or git client of choice (`git clone https://github.com/shannonsands/ftr-test.git`):
 * Enter the directory cloned (`cd ftr-test`)
 * Run the install command (`npm i`);
-* And launch the CLI (`npm start`)
-
+* Launch the dev server (`npm start`)
+* Open a browser to `localhost:4200`
+or
+* Navigate to 
 ### Answers for Part 2
 **Updating the UI**
 
@@ -17,15 +19,18 @@ For example, to turn this application into an API backend using Express (deploya
 1. Install Express ( and some typical accompanying modules for enabling websockets, reading configs etc).
 2. Add a new entrypoint (eg, an `index.ts` file executed on startup) that sets up a simple Express application.
 3. Refactor the services in the Angular app to be regular Typescript classes.
-3. Create a new class or function collection to add route listeners & handlers, creating the FtrTest controller instance and mapping routes & HTTP verbs to the various methods in the controller as appropriate.
-4. Add a websocket handler, for sending regular messages to the browser from the timer.
-5. Create a frontend UI that makes AJAX calls to test the functionality (or spend the time to create a set of endpoint tests in Postman)
+4. Create a new class or function collection to add route listeners & handlers.
+5. Creating a controller class with methods to be invoked by the route handlers, and map routes & HTTP verbs to the various methods in the controller as appropriate.
+6. Add a websocket handler, for sending regular messages to the browser (or other ws client) from the timer.
+7. Create a frontend UI that makes AJAX calls to consume the endpoints & test the functionality (or spend the time to create a set of endpoint tests in Postman).
+
+
 
 **Making it Production Ready**
 
 Getting the app to the point of being production testing should first involve some form of automated testing (preferably both unit tests & e2e tests as needed), a way of performing CI/CD, automated builds & deployments and some form of monitoring. Linting checks can also be important in ensuring that the codebase remains clean & standards are enforced. A file watcher to automatically reload the application can also be useful to developers & accelerate dev time. Preferably, these steps would be at least partially performed prior to beginning a project.
 
-These would be the bare minimum set of features I'd expect in any kind of production project, and don't include more specific means of polishing up projects such as delivering formal OpenAPI specs for RESTful endpoints, Automated browser tests for single page applications, simulater tests for mobile applications and so on. Also, while these changes are mostly to the development toolchain, obviously a comprehencive QA & UAT process should also be followed.
+These would be the bare minimum set of features I'd expect in any kind of production project, and don't include more specific means of polishing up projects such as delivering formal OpenAPI specs for RESTful endpoints, Automated browser tests for single page applications, simulated tests for mobile applications and so on. Also, while these changes are mostly to the development toolchain, obviously a comprehensive QA & UAT process should also be followed.
 
 Assuming the above example of a CLI application the steps would include:
 1. Ensure developers are using a modern editor, such as VS Code, configured to run an automated linting tool such as Prettier, to enforce project code standards (in addition to the regular automated test-on-save features modern editors typically offer). Such standards can generally be included in a configuration file (such as tsconfig.json for the Typescript project above) & included in the project repository.

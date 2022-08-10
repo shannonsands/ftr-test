@@ -1,0 +1,26 @@
+<!--Using default layout-->
+<app-default>
+  <form (submit)="$event.preventDefault()" *ngIf="!quitApp">
+    <mat-card>
+      <mat-card-title>Fibonacci Guesser</mat-card-title>
+      <mat-card-subtitle><p>Timer Output: <span #timerOutputRef id="timer-output">{{ timerOutput }}</span></p></mat-card-subtitle>
+      <mat-card-actions>
+        <button mat-button [disabled]="!timerSet || !timerPaused" (mousedown)="resume()">RESUME</button>
+        <button mat-button [disabled]="!timerSet || timerPaused" (mousedown)="halt()">HALT</button>
+        <button mat-button [disabled]="!timerSet" (mousedown)="quit()">QUIT</button>
+      </mat-card-actions>
+      <mat-card-content *ngIf="!timerSet">
+        <mat-form-field appearance="fill">
+          <mat-label>{{inputLabel}}</mat-label>
+          <input (keyup.enter)="setInterval($event)" type="number" matInput>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-content *ngIf="timerSet">
+        <mat-form-field appearance="fill">
+          <mat-label>{{inputLabel}}</mat-label>
+          <input type="number" (keyup.enter)="updateFrequencyTable($event)" matInput  [(ngModel)]="lastNumber" name="nextInput">
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</app-default>
